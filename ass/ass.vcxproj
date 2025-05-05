@@ -134,8 +134,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mean_seq.cpp" />
     <ClCompile Include="pipeline1.cpp" />
-    <ClCompile Include="pipeline2.cpp" />
+    <ClCompile Include="mean_par.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,7 +21,10 @@
     <ClCompile Include="pipeline1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pipeline2.cpp">
+    <ClCompile Include="mean_par.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mean_seq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

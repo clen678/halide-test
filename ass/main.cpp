@@ -4,20 +4,40 @@
 
 // Forward declarations of your Halide pipeline functions.
 // These functions are defined in your other .cpp files (e.g., pipeline1.cpp, pipeline2.cpp).
-void halide_pipeline2(); // Example: Your first Halide pipeline
-//void halide_pipeline2(); // If you have a second Halide pipeline
+void halide_pipeline1(); // First Halide pipeline
+void mean_par(); // Second Halide pipeline
+void mean_seq();
 
 int main() {
     // 1. Program Start
     std::cout << "Starting Halide image processing program..." << std::endl;
 
-    // 2. Call your Halide pipelines.  Wrap each call in a try-catch block
-    //    to handle potential Halide errors gracefully.
+    // Ask the user which pipeline they want to run
+    int pipelineChoice;
+    std::cout << "Enter 1,2,3,4,etc to run pipelines ";
+    std::cin >> pipelineChoice;
+
+    // 2. Call the chosen Halide pipeline based on user input
     try {
-        std::cout << "Running pipeline1..." << std::endl;
-        halide_pipeline2();
-        std::cout << "Pipeline1 completed successfully." << std::endl;
-        //halide_pipeline2(); // Call your second pipeline if you have one
+        if (pipelineChoice == 1) {
+            std::cout << "Running Pipeline 1..." << std::endl;
+            halide_pipeline1(); // Call the first pipeline
+            std::cout << "Pipeline 1 completed successfully." << std::endl;
+        }
+        else if (pipelineChoice == 2) {
+            std::cout << "Running Pipeline 2..." << std::endl;
+            mean_par(); // Call the second pipeline
+            std::cout << "Pipeline 2 completed successfully." << std::endl;
+        }
+        else if (pipelineChoice == 3) {
+            std::cout << "Running Pipeline 3..." << std::endl;
+            mean_seq(); // Call the second pipeline
+            std::cout << "Pipeline 3 completed successfully." << std::endl;
+        }
+        else {
+            std::cerr << "Invalid choice! Please enter 1 or 2." << std::endl;
+            return EXIT_FAILURE;
+        }
     }
     catch (const Halide::Error& e) {
         std::cerr << "Halide error occurred: " << e.what() << std::endl;
@@ -36,6 +56,6 @@ int main() {
     }
 
     // 3. Program End
-    std::cout << "All pipelines completed successfully.  Exiting program." << std::endl;
+    std::cout << "All pipelines completed successfully. Exiting program." << std::endl;
     return EXIT_SUCCESS; // Use EXIT_SUCCESS for successful exit
 }
