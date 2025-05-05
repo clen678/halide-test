@@ -7,6 +7,8 @@
 void halide_pipeline1(); // First Halide pipeline
 void mean_par(); // Second Halide pipeline
 void mean_seq();
+void gaussian_seq();
+void gaussian_par();
 
 int main() {
     // 1. Program Start
@@ -33,6 +35,16 @@ int main() {
             std::cout << "Running Pipeline 3..." << std::endl;
             mean_seq(); // Call the second pipeline
             std::cout << "Pipeline 3 completed successfully." << std::endl;
+        }
+        else if (pipelineChoice == 4) {
+            std::cout << "Running Pipeline 4..." << std::endl;
+            gaussian_par(); // Call the second pipeline
+            std::cout << "Pipeline 4 completed successfully." << std::endl;
+        }
+        else if (pipelineChoice == 5) {
+            std::cout << "Running Pipeline 5..." << std::endl;
+            gaussian_seq(); // Call the second pipeline
+            std::cout << "Pipeline 5 completed successfully." << std::endl;
         }
         else {
             std::cerr << "Invalid choice! Please enter 1 or 2." << std::endl;

@@ -27,5 +27,11 @@
     <ClCompile Include="mean_seq.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gaussian_seq.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gaussian_par.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

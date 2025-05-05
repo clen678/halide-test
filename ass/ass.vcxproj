@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gaussian_par.cpp" />
+    <ClCompile Include="gaussian_seq.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mean_seq.cpp" />
     <ClCompile Include="pipeline1.cpp" />
