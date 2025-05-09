@@ -8,51 +8,43 @@ using namespace Halide::Tools;
 
 void gaussian_par() {
     Buffer<uint8_t> input = load_image("images/2.jpg");
-    int width = input.width();
-    int height = input.height();
-    int channels = input.channels();
 
     Var x, y, c;
-    Func input_func, blur_x, blur_y;
+    Func blur_x, blur_y, g;
 
-    // Define clamped input
-    input_func(x, y, c) = cast<int>(BoundaryConditions::repeat_edge(input)(x, y, c));
+    // Define Gaussian weights (1, 4, 6, 4, 1)
+    g(x) = select(
+        x == 0, 1,
+        x == 1, 4,
+        x == 2, 6,
+        x == 3, 4,
+        1);
 
-    // 1D Gaussian kernel: [1 4 6 4 1]
-    // Normalize factor: 16
-    blur_x(x, y, c) = (
-        input_func(x - 2, y, c) +
-        input_func(x - 1, y, c) * 4 +
-        input_func(x, y, c) * 6 +
-        input_func(x + 1, y, c) * 4 +
-        input_func(x + 2, y, c)
-        );
+    // Horizontal and vertical reduction domains
+    RDom rx(-2, 5), ry(-2, 5);
 
-    blur_y(x, y, c) = cast<uint8_t>((
-        blur_x(x, y - 2, c) +
-        blur_x(x, y - 1, c) * 4 +
-        blur_x(x, y, c) * 6 +
-        blur_x(x, y + 1, c) * 4 +
-        blur_x(x, y + 2, c)
-        ) / 256); // 16 * 16 normalization
+    Expr clamped_x = clamp(x + rx, 0, input.width() - 1);
+    blur_x(x, y, c) = sum(cast<uint16_t>(input(clamped_x, y, c)) * g(rx + 2));
 
-    // Schedule: parallelize y, vectorize x
-    Var yo, yi;
+    Expr clamped_y = clamp(y + ry, 0, input.height() - 1);
+    blur_y(x, y, c) = cast<uint8_t>(sum(blur_x(x, clamped_y, c) * g(ry + 2)) / 256);
+
+    // Schedule
+    Var xo, yo, xi, yi;
     blur_y
-        .split(y, yo, yi, 32)
-        .parallel(yo);
-        //.vectorize(x, 8);
+        .tile(x, y, xo, yo, xi, yi, 64, 64)
+        .parallel(yo)
+        //.parallel(xo)
+        .vectorize(xi, 4);
 
-    // Timing
     Target target = get_target_from_environment();
+
     auto t1 = std::chrono::high_resolution_clock::now();
-    Buffer<uint8_t> output = blur_y.realize({ width, height, channels }, target);
+    Buffer<uint8_t> output = blur_y.realize({ input.width(), input.height(), input.channels() }, target);
     auto t2 = std::chrono::high_resolution_clock::now();
 
-    std::cout << "Halide Gaussian blur (parallel) time: "
-        << std::chrono::duration<float, std::milli>(t2 - t1).count()
-        << " ms\n";
+    std::cout << "Time (5x5 Gaussian separable): " << std::chrono::duration<float, std::milli>(t2 - t1).count() << " ms\n";
 
-    save_image(output, "gaussian_halide_parallel.png");
-    std::cout << "Saved output as gaussian_halide_parallel.png\n";
+    save_image(output, "gaussian_separable_clamped.png");
+    std::cout << "Pipeline (5x5 separable Gaussian) Success!\n";
 }
