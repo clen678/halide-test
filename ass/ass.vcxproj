@@ -137,6 +137,8 @@
     <ClCompile Include="gaussian_seq.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mean_seq.cpp" />
+    <ClCompile Include="median_par.cpp" />
+    <ClCompile Include="median_seq.cpp" />
     <ClCompile Include="pipeline1.cpp" />
     <ClCompile Include="mean_par.cpp" />
   </ItemGroup>

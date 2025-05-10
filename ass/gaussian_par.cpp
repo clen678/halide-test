@@ -23,6 +23,7 @@ void gaussian_par() {
     // Horizontal and vertical reduction domains
     RDom rx(-2, 5), ry(-2, 5);
 
+    // Define the expression for the 5x5 Gaussian blur
     Expr clamped_x = clamp(x + rx, 0, input.width() - 1);
     blur_x(x, y, c) = sum(cast<uint16_t>(input(clamped_x, y, c)) * g(rx + 2));
 
@@ -34,7 +35,6 @@ void gaussian_par() {
     blur_y
         .tile(x, y, xo, yo, xi, yi, 64, 64)
         .parallel(yo)
-        //.parallel(xo)
         .vectorize(xi, 4);
 
     Target target = get_target_from_environment();
@@ -45,6 +45,6 @@ void gaussian_par() {
 
     std::cout << "Time (5x5 Gaussian separable): " << std::chrono::duration<float, std::milli>(t2 - t1).count() << " ms\n";
 
-    save_image(output, "gaussian_separable_clamped.png");
+    save_image(output, "gaussian_par.png");
     std::cout << "Pipeline (5x5 separable Gaussian) Success!\n";
 }

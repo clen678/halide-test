@@ -9,6 +9,8 @@ void mean_par(); // Second Halide pipeline
 void mean_seq();
 void gaussian_seq();
 void gaussian_par();
+void median_seq();
+void median_par();
 
 int main() {
     // 1. Program Start
@@ -45,6 +47,16 @@ int main() {
             std::cout << "Running Pipeline 5..." << std::endl;
             gaussian_seq(); // Call the second pipeline
             std::cout << "Pipeline 5 completed successfully." << std::endl;
+        }
+        else if (pipelineChoice == 6) {
+            std::cout << "Running Pipeline 6..." << std::endl;
+            median_par(); // Call the second pipeline
+            std::cout << "Pipeline 6 completed successfully." << std::endl;
+        }
+        else if (pipelineChoice == 7) {
+            std::cout << "Running Pipeline 7..." << std::endl;
+			median_seq(); // Call the second pipeline
+            std::cout << "Pipeline 7 completed successfully." << std::endl;
         }
         else {
             std::cerr << "Invalid choice! Please enter 1 or 2." << std::endl;

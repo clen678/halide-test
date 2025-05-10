@@ -33,5 +33,11 @@
     <ClCompile Include="gaussian_par.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="median_seq.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="median_par.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
